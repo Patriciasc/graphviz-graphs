@@ -1,0 +1,16 @@
+digraph TreeTableView
+{
+  node [shape="box" style="filled" fillcolor="PaleGreen3"];
+    TreeModel [label="Tree Model (master)"];
+    TreeProxyModel [label="Tree Proxy Model"];
+    TreeView [label="Tree View"];
+    TableProxyModel [label="Table Proxy Model"];
+    TableView [label="Table View"];
+    
+  /*Connection*/
+  TreeModel->TreeProxyModel
+  TreeModel->TableProxyModel
+  TreeProxyModel->TreeView
+  TableProxyModel->TableView
+}
+

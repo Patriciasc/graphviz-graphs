@@ -1,0 +1,24 @@
+digraph ProjectExplorer
+{
+  node [shape="box" style="filled" fillcolor="PaleGreen3"];
+    projectManager [label="Project Manager (ProjectExplorer::IProjectManager)"];
+    project         [label="Project (ProjectExplorer::Project)"];
+    mimeType        [label="Mime Type"];
+    target          [label="Target (ProjectExplorer::Target)"];
+    buildConf       [label="Build configuration (ProjectExplorer::BuildConfiguration"];
+    deployConf      [label="Deploy configuration (ProjectExplorer::DeployConfiguration"];
+    runConf         [label="Run configuration (ProjectExplorer::RunConfiguration"];
+    buildStepList   [label="Build step list (ProjectExplorer::BuildStepList"];
+    
+  /*Connection*/
+  projectManager->{project; mimeType}   [label="defined by"];
+  project->target            [label="can build several"];
+  target->buildConf          [label="can have several" concentrate=true];
+  target->deployConf         [label="can have several"];
+  target->runConf            [label="can have several"];
+  buildConf->buildStepList   [label="has two (clean & build)"];
+  deployConf->buildStepList  [label="is a"]; 
+
+  graph [label="QtCreator Project Explorer architecture." bgcolor="transparent"];
+}
+

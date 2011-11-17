@@ -1,0 +1,140 @@
+digraph Cheese_Architecture
+{
+  colorscheme="blues5";
+  node [shape="box" style="filled,rounded"];
+
+  subgraph cluster_UI
+  {
+      label="UI";
+      style="filled";
+      fillcolor="4";
+      
+      node [style="filled,rounded,dashed"];
+      c_main            [label="CheeseMain"];
+      c_window          [label="CheeseWindow"];
+      c_effects_manager [label="CheeseEffectsManager"];
+      c_preferences     [label="CheesePreferences"];
+      c_countdown       [label="CheeseCountdown"];
+      eog_thumbnav      [label="EogThumbNav"];
+      c_thumbview       [label="CheeseThumbView"];
+      thumbnail         [label="ThumbNail"];
+  }
+ 
+  /* Convenience node for layouting */ 
+  trans_node1 [label="" color="transparent" fillcolor="transparent"];
+  /* UI connections */
+  c_main->c_window
+  c_window->c_preferences
+  c_window->c_countdown
+  c_window->c_effects_manager
+  c_window->eog_thumbnav
+  eog_thumbnav->c_thumbview
+  c_thumbview->thumbnail
+  thumbnail->trans_node1 [color="transparent"];
+
+  subgraph cluster_libcheese_gtk
+  {
+      label="libcheese-gtk";
+      style="filled";
+      fillcolor="4";
+
+      c_widget         [label="CheeseWidget"];
+      c_flash          [label="CheeseFlash"];
+      c_aspect_frame   [label="CheeseAspectFrame" style="dashed,filled,rounded"];
+      c_avatar_chooser [label="CheeseAvatarChooser"];
+      um_crop_area     [label="UmCropArea" style="dashed,filled,rounded"];
+  }
+  
+  trans_node1->c_widget [color="transparent"]; 
+  /* libcheese_gtk connections */
+  c_widget->c_avatar_chooser
+  c_widget->c_aspect_frame
+  c_avatar_chooser->um_crop_area
+  c_avatar_chooser->c_flash
+      
+  subgraph cluster_libcheese
+  {
+      label="libcheese";
+      style="filled";
+      fillcolor="4";
+
+      c_camera                [label="CheeseCamera"];
+      c_camera_device         [label="CheeseCameraDevice"];
+      c_camera_device_monitor [label="CheeseCameraDeviceMonitor"];
+      c_video_format          [label="CheeseVideoFormat"];
+      c_effect                [label="CheeseEffect"];
+      c_file_util             [label="CheeseFileUtil"];
+  }
+
+  /* Convenience node for layouting */ 
+  trans_node2 [label="" color="transparent" fillcolor="transparent"];
+  /* libcheese connections */
+  c_camera_device_monitor->c_camera
+  c_camera->c_effect
+  c_camera->c_camera_device
+  c_camera_device->c_video_format  
+  c_video_format->trans_node2 [color="transparent"];
+
+  subgraph cluster_system
+  {
+      label="System (external)";
+      style="filled";
+      fillcolor="2";
+
+      gudev           [label="gudev"];
+      camerabin       [label="CameraBin"];
+      gstreamer       [label="GStreamer"];
+      g_video_effects [label="GNOME Video Effects"];
+  }
+
+  /* system connections */
+  c_camera_device_monitor->gudev
+  c_camera->camerabin            [dir="both"]
+  c_camera_device->camerabin
+  camerabin->gstreamer
+  c_effect->g_video_effects
+  trans_node2->gudev             [color="transparent"];
+
+  /* Convenience node for layouting */ 
+  trans_node3                 [label="" color="transparent" fillcolor="transparent"];
+  /* Connections between clutters */
+  c_window->c_file_util
+  c_window->c_widget
+  c_window->c_flash
+  c_widget->c_camera  
+  c_thumbview->c_file_util
+  c_effects_manager->c_effect
+  c_flash->trans_node3        [color="transparent"];
+
+  subgraph cluster_legend
+  {
+      mindist=0;
+      ranksep=0;
+      nodesep=0;
+      style="filled";
+      fillcolor="1";
+
+      node     [shape=box margin="0,0"];
+      edge     [style=invis];
+
+      pe_text  [label="Publicly exported" color="transparent" style=""];
+      pe_node  [label="" style="filled,rounded"];
+
+      npe_text [label="Not publicly exported" color="transparent" style=""];
+      npe_node [label="" style="filled,dashed,rounded"];
+      
+      Legend   [color="transparent" style=""];
+
+      Legend->pe_text
+      Legend->pe_node
+      pe_text->npe_text
+      pe_node->npe_node
+
+      edge     [constraint=false];
+      pe_text->pe_node
+      npe_text->npe_node
+  }
+  trans_node3->Legend [color="transparent"];
+
+  graph [label="Cheese Architecture" bgcolor="transparent"];
+}

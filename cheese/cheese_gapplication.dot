@@ -1,0 +1,50 @@
+digraph GApplication
+{
+  node [shape="box" style="filled" fillcolor="PaleGreen3"];
+    appRun   [label="g_application_run()"];
+    local    [label="local_command_line()"];
+  
+  subgraph cluster_local_command_line
+  {
+      label="local_command_line()";
+      labeljust="r";
+      style="filled";
+      fillcolor="LemonChiffon1";
+      register [label="g_application_register()"];
+      args     [label="Are there any local\ncommand line arguments?"];
+      true     [label="return TRUE"];
+      activate [label="g_application_activate()"];
+      parser   [label="Set command line option parser. "];
+      isRemote [label="get_is_remote()?"];
+      print    [label="Another instance is\ncurrently running"];
+  };
+  
+  subgraph cluster_activate_signal_handler
+  {
+      label="activate_signal_handler"
+      labeljust="r";
+      style="filled";
+      fillcolor="LemonChiffon1";
+      hasWindow [label="Does the instance\nhave a window?"];
+      show   [label="gtk_window_present()"];
+      new [label="Create new window\nand handle command\nline arguments"];
+  };
+  
+  /*Connection*/
+  appRun->local->register
+  register->args           [label="success"]
+  register->true           [label="fail"]
+  args->activate           [label="no"]
+  args->parser             [label="yes"]
+  parser->isRemote
+  isRemote->activate       [label="no"]
+  activate->true 
+  activate->hasWindow
+  isRemote->print          [label="yes"]
+  print->true
+  hasWindow->show          [label="yes"]
+  hasWindow->new           [label="no"]
+  
+  graph [label="GApplication in Cheese 2.91.91." bgcolor="transparent"];
+}
+
