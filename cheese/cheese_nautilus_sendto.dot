@@ -1,0 +1,72 @@
+digraph Cheese_Sharing_Objects
+{
+  colorscheme="blues5";
+  node [shape="box" style="filled,rounded"];
+
+  subgraph cluster_cheese_application
+  {
+      label="Cheese application";
+      style="filled";
+      fillcolor="4";
+
+      cheese_object     [label="User image/video"];
+  }
+
+  nautilus_sendto [label="nautilus-sendto"];
+
+  subgraph cluster_libsocialweb_services
+  {
+      label="";
+      style="filled";
+      fillcolor="4";
+
+
+      libsocialweb_services    [label="Libsocialweb services"];
+      libsocialweb_FB          [label="Facebook"];
+      libsocialweb_Vimeo       [label="Vimeo"];
+      libsocialweb_Twitter     [label="Twitter"];
+      libsocialweb_Smugmug     [label="Smugmug"];
+      libsocialweb_Sina        [label="Sina"];
+      libsocialweb_Plurk       [label="Plurk"];
+      libsocialweb_Photobucket [label="Photobucket"];
+      libsocialweb_MySpace     [label="MySpace"];
+      libsocialweb_LastFm      [label="Last.fm"];
+      libsocialweb_Flickr      [label="Flickr"];
+      libsocialweb_YouTube     [label="YouTube"];
+
+      /* Internal connections */
+      libsocialweb_services->libsocialweb_FB
+      libsocialweb_services->libsocialweb_Vimeo
+      libsocialweb_services->libsocialweb_Twitter
+      libsocialweb_services->libsocialweb_Smugmug
+      libsocialweb_services->libsocialweb_Sina
+      libsocialweb_services->libsocialweb_Plurk
+      libsocialweb_services->libsocialweb_Photobucket
+      libsocialweb_services->libsocialweb_MySpace
+      libsocialweb_services->libsocialweb_LastFm
+      libsocialweb_services->libsocialweb_Flickr
+      libsocialweb_services->libsocialweb_YouTube 
+  }
+
+  subgraph cluster_other_services
+  {
+      label="";
+      style="filled";
+      fillcolor="4";
+
+      other_services [label="Other services"];
+      bluetooth      [label="Bluetooth"];
+      e_mail         [label="E-Mail"];
+
+     /* Internal connections */
+     other_services->bluetooth
+     other_services->e_mail
+  }
+  
+  /* Connections */
+  cheese_object->nautilus_sendto [label="share"];
+  nautilus_sendto->libsocialweb_services
+  nautilus_sendto->other_services
+
+  graph [label="Sharing videos and images with Cheese" bgcolor="transparent"];
+}
