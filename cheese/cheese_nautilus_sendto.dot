@@ -13,6 +13,7 @@ digraph Cheese_Sharing_Objects
   }
 
   nautilus_sendto [label="nautilus-sendto"];
+  bisho           [label="bisho"];
 
   subgraph cluster_libsocialweb_services
   {
@@ -65,7 +66,9 @@ digraph Cheese_Sharing_Objects
   
   /* Connections */
   cheese_object->nautilus_sendto [label="share"];
-  nautilus_sendto->libsocialweb_services
+  nautilus_sendto->bisho
+  bisho->libsocialweb_services
+  bisho->other_services [color="transparent"];
   nautilus_sendto->other_services
 
   graph [label="Sharing videos and images with Cheese" bgcolor="transparent"];
